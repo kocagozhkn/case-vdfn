@@ -5,9 +5,9 @@ metadata:
   annotations:    
     nginx.ingress.kubernetes.io/app-root: /hello
 spec:
-  ingressClassName: case-example
+  ingressClassName: nginx
   rules:
-  - host: www.hakankocagoz.com
+  - host: hakankocagoz.com
     http:
       paths:
       - path: /
