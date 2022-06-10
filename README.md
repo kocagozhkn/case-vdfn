@@ -23,7 +23,7 @@ Route53
 
 ![](/imgs/route53.PNG)
 
-When the client type browser [http://hakankocagoz.com](http://www.hakankocagoz.com/) , aws route53 will send that request to load balancer, loadbalancer took that request and sent it to kubernetes nodeport tcp:30055, ingress will check the request path and related service will respond to request.
+When the client type browser [http://hakankocagoz.com](http://hakankocagoz.com/) , aws route53 will send that request to load balancer, loadbalancer took that request and sent it to kubernetes nodeport tcp:30055, ingress will check the request path and related service will respond to request.
 
 Pipeline / Declarative
 
