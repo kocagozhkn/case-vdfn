@@ -1,51 +1,45 @@
-# Spring Boot Hello World
+CI/CD SPRING BOOT PIPELINE PROJECT
 
-**A simple Spring Boot app to send hello world message to a user**
+In this project we will build spring boot hello world app, with jenkins then deploy to k8s cluster which is based on AWS platform. When jenkins build triggered it will download source code from github link and build it and create artifact which is a jar file, after second phase docker will build docker image according to Dockerfile, when the build finishes third phase will begin taggin and pushing image to DockerHub. Last phase is kubernetes deploy, with deployment files jenkins will apply kubernetes deployment and trigger a rollout to push kubernetes new image from Hub.
 
-## How to Run Application
+Prequerities:
 
-**Start the application using any of the commands mentioned below**
+- Kubernetes cluster: Two ec2 machine t3a.medium, one of master, other is worker node, images are both ubuntu 20.04.
+- Jenkins Server: single ec2 machine type t2.medium image ubuntu 20.04, these jenkins plugins must be configured. Docker, Docker Pipeline, Maven, Git, Kubectl. Also the kubeconfig file must be placed at /var/lib/jenkins/.kube/config to deploy the kubernetes cluster.
+- Docker Hub: We will use a free tier public repository for the project.
 
-> **Note:** First two commands need to run inside the root folder of this project i.e inside the **spring-boot-hello-world** folder
+General View Of Project
 
+![](/imgs/AWS.PNG)
 
-- **Using maven** <br/>``` mvn spring-boot:run```
+AWS Instance View ![](/imgs/ec2_list.PNG)
 
+AWS Load Balancer
 
-- **From jar file**
-  Create a jar file using '**mvn clean install**' command and then execute
-  <br/>```java -jar target/hello-world-1.0.1-SNAPSHOT.jar```
-
-
-- **Directly from IDE**
-  <br/>```Right click on HelloWorldApplication.java and click on 'Run' option```
-  <br/><br/>
-
-> **Note:** By default spring boot application starts on port number 8080. If port 8080 is occupied in your system then you can change the port number by uncommenting and updating the **server.port** property inside the **application.properties** file that is available inside the **src > main > resources** folder.
-
-<br/>
-
-**Send an HTTP GET request to '/hello' endpoint using any of the two methods**
-
-- **Browser or REST client**
-  <br/>```http://localhost:8080/hello```
+![](/imgs/alb.PNG)
 
 
-- **cURL**
-  <br/>```curl --request GET 'http://localhost:8080/hello'```
+Route53
 
+![](/imgs/route53.PNG)
 
-## How to Run Unit Test Cases
+When the client type browser [www.hakankocagoz.com](http://www.hakankocagoz.com/) , aws route53 will send that request to load balancer, loadbalancer took that request and sent it to kubernetes nodeport tcp:30055, ingress will check the request path and related service will respond to request.
 
-**Run the test cases using any of the commands mentioned below**
+Pipeline / Declarative
 
-> **Note:** These commands need to run inside the root folder of this project i.e inside the **spring-boot-hello-world** folder
+![](/imgs/jenkins.PNG)
 
-- **To run all the test cases**
-  <br/>```mvn test```
+Pipeline has 6 stages:
 
+1. Stage: Declaration of tools that we use in stages.
+2. Stage: Git checkout, choose which branch to build.
+3. Stage: Build source code with maven according to POM.xml
+4. Stage: Build docker image with artifact which comes from maven build stage.
+5. Stage: Tag docker image and push to Docker HUB.
+6. Stage: Kubernetes deployment and trigger redeployment to take a newer image.
 
-- **To run a particular test class**
-  <br/>```mvn -Dtest=HelloWorldControllerTest test```
-  <br/>or
-  <br/>```mvn -Dtest=HelloWorldApplicationTests test```
+![](/imgs/pipeline.PNG)
+
+Docker HUB
+
+![](/imgs/hub.PNG)

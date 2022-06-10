@@ -43,6 +43,7 @@ pipeline {
        stage('Deployment') {
             steps {
             sh 'kubectl --insecure-skip-tls-verify apply -f ./k8s-deployment'
+            sh 'kubectl rollout restart deployment'
             }
         }
     }
