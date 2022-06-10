@@ -44,6 +44,6 @@ Docker HUB
 
 ![](/imgs/hub.PNG)
 
-Finannly we have our project working.
+Finanlly we have our project working.
 
-![](/imgs/chrome.PNG.PNG)
+![](/imgs/chrome.PNG)
