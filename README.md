@@ -43,3 +43,7 @@ Pipeline has 6 stages:
 Docker HUB
 
 ![](/imgs/hub.PNG)
+
+Finannly we have our project working.
+
+![](/imgs/chrome.PNG.PNG)
